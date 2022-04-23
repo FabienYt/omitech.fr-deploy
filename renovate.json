@@ -1,0 +1,4 @@
+{
+  "baseBranches": ["main"],
+  "enabledManagers": ["ansible-galaxy", "dockerfile"]
+}

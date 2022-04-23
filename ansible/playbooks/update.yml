@@ -1,0 +1,45 @@
+---
+- name: Configure hosts
+  hosts: omitech.fr
+  tasks:
+    - name: Copy deploy key
+      ansible.builtin.copy:
+        src: /data/ssh_keys/omitech_deploy
+        dest: "{{ omitech_base }}"
+        mode: "0400"
+    - name: Composer backup
+      ansible.builtin.command: composer backup
+      args:
+        chdir: "{{ omitech_base }}/omitech.fr"
+        removes: "{{ omitech_base }}/omitech.fr/composer.json"
+    - name: Git checkout
+      ansible.builtin.git:
+        clone: true
+        depth: 1
+        dest: "{{ omitech_base }}/omitech.fr"
+        force: true
+        key_file: "{{ omitech_base }}/omitech_deploy"
+        repo: git@github.com:FabienYt/omitech.fr.git
+        update: true
+    - name: Composer install
+      ansible.builtin.command: composer install --no-dev
+      args:
+        chdir: "{{ omitech_base }}/omitech.fr"
+        removes: "{{ omitech_base }}/omitech.fr/composer.json"
+    - name: Composer cache:clear
+      ansible.builtin.command: composer cache:clear
+      args:
+        chdir: "{{ omitech_base }}/omitech.fr"
+        removes: "{{ omitech_base }}/omitech.fr/composer.json"
+    - name: Change folders permissions
+      ansible.builtin.file:
+        path: "{{ omitech_base }}/omitech.fr/{{ item }}"
+        mode: "0744"
+      loop:
+        - data/accounts
+        - data/backups
+        - data/cache
+        - data/content
+        - data/logs
+        - data/sessions
+        - public/media

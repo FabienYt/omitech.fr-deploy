@@ -1,0 +1,14 @@
+### Ansible ###
+
+# Galaxy
+# ---------------
+ansible/galaxy/*
+
+# Vault password
+# ---------------
+ansible/.vault_password_file.txt
+
+### Editors ###
+*.sublime-project
+*.sublime-workspace
+/.vscode
