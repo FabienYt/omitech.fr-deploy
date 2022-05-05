@@ -37,7 +37,7 @@
         mode: "{{ item.mode | default('0744') }}"
       loop:
         - { name: "data/accounts" }
-        - { name: "data/backups", mode: "0774" }
+        - { name: "data/backups" }
         - { name: "data/cache" }
         - { name: "data/content" }
         - { name: "data/logs" }
