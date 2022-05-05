@@ -33,13 +33,13 @@
         removes: "{{ omitech_base }}/omitech.fr/composer.json"
     - name: Change folders permissions
       ansible.builtin.file:
-        path: "{{ omitech_base }}/omitech.fr/{{ item }}"
-        mode: "0744"
+        path: "{{ omitech_base }}/omitech.fr/{{ item.name }}"
+        mode: "{{ item.mode | default('0744') }}"
       loop:
-        - data/accounts
-        - data/backups
-        - data/cache
-        - data/content
-        - data/logs
-        - data/sessions
-        - public/media
+        - { name: "data/accounts" }
+        - { name: "data/backups", mode: "0774" }
+        - { name: "data/cache" }
+        - { name: "data/content" }
+        - { name: "data/logs" }
+        - { name: "data/sessions" }
+        - { name: "public/media" }
